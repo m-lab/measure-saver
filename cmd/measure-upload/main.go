@@ -69,7 +69,7 @@ func main() {
 	}
 
 	// Endpoints' routing.
-	e.POST("/tests", uploadHandler.PostUpload)
+	e.POST("/measurements", uploadHandler.PostUpload)
 
 	// Start the Echo server.
 	e.Logger.Fatal(e.Start(*flagListenAddr))
