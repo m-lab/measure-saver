@@ -37,8 +37,8 @@ The API only exposes one REST resource: `/measurements`. To send a measurement t
 Example:
 ```
 {
-  "BrowserID": "a",
-  "DeviceType": "device-type",
+  "BrowserID": "a-unique-browser-id",
+  "DeviceType": "xyz",
   "Notes": "This is a note",
   "Download": 100,
   "Upload": 50,
