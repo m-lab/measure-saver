@@ -6,7 +6,7 @@ type Measurement struct {
 	ID int64 `pg:",pk"`
 
 	// BrowserID is a unique identifier for this Measurement's uploader.
-	BrowserID string `sql:",notnull"`
+	BrowserID string `sql:",notnull" validate:"required"`
 
 	// DeviceType is a free-form string identifying the device type.
 	DeviceType string
@@ -14,9 +14,9 @@ type Measurement struct {
 	// Notes is a free-form string containing browser-specific notes.
 	Notes string
 
-	Download float64 `pg:",use_zero"`
-	Upload   float64 `pg:",use_zero"`
-	Latency  int     `pg:",use_zero"`
+	Download float64 `pg:",use_zero" validate:"required"`
+	Upload   float64 `pg:",use_zero" validate:"required"`
+	Latency  int     `pg:",use_zero" validate:"required"`
 
 	Results Results
 }

@@ -5,12 +5,21 @@ import (
 	"net/http"
 
 	"github.com/go-pg/pg"
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
 	"github.com/m-lab/measure-upload-service/internal/model"
 )
 
 type UploadHandler struct {
 	DBConn *pg.DB
+}
+
+type CustomValidator struct {
+	Validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	return cv.Validator.Struct(i)
 }
 
 func (h *UploadHandler) PostUpload(c echo.Context) error {
@@ -24,7 +33,12 @@ func (h *UploadHandler) PostUpload(c echo.Context) error {
 	var m model.Measurement
 	err := c.Bind(&m)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	// Validate object.
+	if err = c.Validate(&m); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	err = h.DBConn.Insert(&m)

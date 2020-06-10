@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
 	"github.com/m-lab/go/flagx"
 	"github.com/m-lab/go/rtx"
@@ -60,6 +61,9 @@ func main() {
 
 	// Initialize the Echo server.
 	e := echo.New()
+	e.Validator = &internal.CustomValidator{
+		Validator: validator.New(),
+	}
 
 	// Endpoints' routing.
 	e.POST("/tests", uploadHandler.PostUpload)
