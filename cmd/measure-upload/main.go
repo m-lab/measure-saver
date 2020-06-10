@@ -17,13 +17,16 @@ import (
 )
 
 const (
-	DefaultDBAddr = ":5432"
-	DefaultDBUser = "postgres"
-	DefaultDBPass = "secret"
-	DefaultDBName = "measure-app"
+	DefaultListenAddr = ":1323"
+	DefaultDBAddr     = ":5432"
+	DefaultDBUser     = "postgres"
+	DefaultDBPass     = "secret"
+	DefaultDBName     = "measure-app"
 )
 
 var (
+	flagListenAddr = flag.String("listenaddr", DefaultListenAddr,
+		"Address to listen for incoming connection on.")
 	flagDBAddr = flag.String("db.addr", DefaultDBAddr,
 		"Address of the PostgreSQL database to use.")
 	flagDBUser = flag.String("db.user", DefaultDBUser,
@@ -69,7 +72,7 @@ func main() {
 	e.POST("/tests", uploadHandler.PostUpload)
 
 	// Start the Echo server.
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(*flagListenAddr))
 }
 
 // createSchema creates database schema for the Measurement model.
