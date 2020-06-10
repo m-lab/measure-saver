@@ -43,12 +43,6 @@ Example:
   "Download": 100,
   "Upload": 50,
   "Latency": 20,
-  "mlabInformation": {
-    "fqdn": "",
-    "label": "",
-    "metro": "",
-    "site": ""
-  },
   "Results": {
 	[free-form json populated with debug information about the measurement]
   }
