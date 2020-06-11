@@ -58,7 +58,7 @@ func main() {
 	}
 
 	// Initialize the handler.
-	uploadHandler := internal.UploadHandler{
+	testsHandler := internal.TestsHandler{
 		DBConn: db,
 	}
 
@@ -69,7 +69,7 @@ func main() {
 	}
 
 	// Endpoints' routing.
-	e.POST("/measurements", uploadHandler.PostUpload)
+	e.POST("/measurements", testsHandler.Post)
 
 	// Start the Echo server.
 	e.Logger.Fatal(e.Start(*flagListenAddr))

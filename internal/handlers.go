@@ -10,20 +10,25 @@ import (
 	"github.com/m-lab/measure-upload-service/internal/model"
 )
 
-type UploadHandler struct {
+// TestsHandler is the handler for the /tests endpoint.
+type TestsHandler struct {
 	DBConn *pg.DB
 }
 
+// CustomValidator is a custom validator wrapping go-playground/validator.
 type CustomValidator struct {
 	Validator *validator.Validate
 }
 
+// Validate validates the passed struct according to its "validate"
+// annotations.
 func (cv *CustomValidator) Validate(i interface{}) error {
 	return cv.Validator.Struct(i)
 }
 
-func (h *UploadHandler) PostUpload(c echo.Context) error {
-	// Verify the provided appID is among the allowed ones.
+// Post is the HTTP handler for POST /tests.
+func (h *TestsHandler) Post(c echo.Context) error {
+	// TODO: Verify the provided appID is among the allowed ones.
 	appID := c.QueryParam("appid")
 	if appID == "" {
 		return echo.NewHTTPError(http.StatusBadRequest,
