@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/go-pg/pg/orm"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
 	"github.com/m-lab/measure-upload-service/internal/model"
@@ -38,6 +39,10 @@ func (db *mockDB) Insert(o ...interface{}) error {
 	}
 
 	db.objects = append(db.objects, o)
+	return nil
+}
+
+func (db *mockDB) CreateTable(model interface{}, opt *orm.CreateTableOptions) error {
 	return nil
 }
 
