@@ -1,4 +1,4 @@
-package internal
+package measurements
 
 import (
 	"encoding/json"

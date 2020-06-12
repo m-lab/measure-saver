@@ -1,6 +1,3 @@
-// measure-upload is a REST API which receives measurements from the
-// M-Lab Measure Chrome Extension in JSON format and stores them into a
-// PostgreSQL database.
 package main
 
 import (

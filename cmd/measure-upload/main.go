@@ -13,6 +13,7 @@ import (
 	"github.com/m-lab/go/flagx"
 	"github.com/m-lab/go/rtx"
 	"github.com/m-lab/measure-upload-service/internal"
+	"github.com/m-lab/measure-upload-service/internal/measurements"
 	"github.com/m-lab/measure-upload-service/internal/model"
 )
 
@@ -68,18 +69,18 @@ func main() {
 	}
 
 	// Initialize the handler.
-	testsHandler := internal.TestsHandler{
+	testsHandler := measurements.Handler{
 		DB: db,
 	}
 
 	// Initialize the Echo server.
 	e := echo.New()
-	e.Validator = &internal.CustomValidator{
+	e.Validator = &measurements.Validator{
 		Validator: validator.New(),
 	}
 
 	// Endpoints' routing.
-	e.POST("/measurements", testsHandler.Post)
+	e.POST("/v0/measurements", testsHandler.Post)
 
 	// Start the Echo server.
 	e.Logger.Fatal(e.Start(*flagListenAddr))
