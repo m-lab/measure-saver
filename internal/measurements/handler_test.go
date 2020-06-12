@@ -67,7 +67,7 @@ func TestHandler_Post(t *testing.T) {
 
 	t.Run("ok", func(t *testing.T) {
 		// Send test request.
-		req := httptest.NewRequest(http.MethodPost, "/v0/measurement?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
 			strings.NewReader(string(jsonBody)))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
