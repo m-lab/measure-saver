@@ -48,7 +48,7 @@ func (db *mockDB) Close() error {
 func TestTestsHandler_Post(t *testing.T) {
 	db := &mockDB{}
 	h := &TestsHandler{
-		db: db,
+		DB: db,
 	}
 	e := echo.New()
 	e.Validator = &CustomValidator{

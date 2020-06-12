@@ -59,7 +59,7 @@ func main() {
 
 	// Initialize the handler.
 	testsHandler := internal.TestsHandler{
-		DBConn: db,
+		DB: db,
 	}
 
 	// Initialize the Echo server.

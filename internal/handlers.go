@@ -11,7 +11,7 @@ import (
 
 // TestsHandler is the handler for the /tests endpoint.
 type TestsHandler struct {
-	db Database
+	DB Database
 }
 
 // CustomValidator is a custom validator wrapping go-playground/validator.
@@ -45,7 +45,7 @@ func (h *TestsHandler) Post(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	err = h.db.Insert(&m)
+	err = h.DB.Insert(&m)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
