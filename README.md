@@ -47,3 +47,4 @@ Example:
 	[free-form json populated with debug information about the measurement]
   }
 }
+```
