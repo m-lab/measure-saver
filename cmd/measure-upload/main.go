@@ -17,11 +17,21 @@ import (
 )
 
 const (
+	// DefaultListenAddr is the default address to listen on for incoming
+	// connections.
 	DefaultListenAddr = ":1323"
-	DefaultDBAddr     = ":5432"
-	DefaultDBUser     = "postgres"
-	DefaultDBPass     = "secret"
-	DefaultDBName     = "measure-app"
+
+	// DefaultDBAddr is the default address of the PostgreSQL database.
+	DefaultDBAddr = ":5432"
+
+	// DefaultDBUser is the default user for the PostgreSQL database.
+	DefaultDBUser = "postgres"
+
+	// DefaultDBPass is the default password for the PostgreSQL database.
+	DefaultDBPass = "secret"
+
+	// DefaultDBName is the default PostgreSQL database name.
+	DefaultDBName = "measure-app"
 )
 
 var (
