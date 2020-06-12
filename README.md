@@ -32,7 +32,7 @@ docker run --network=host measurementlab/measure-upload:latest -db.create
 For a complete and up-to-date list of the available flags, please refer to the output of `-help`.
 
 ### Using the service
-The API only exposes one REST resource: `/measurements`. To send a measurement to this API, send a `POST` request to this endpoint containing the JSON representing a measurement's result.
+The API only exposes one REST resource: `/v0/measurements`. To send a measurement to this API, send a `POST` request to this endpoint containing the JSON representing a measurement's result.
 
 Example:
 ```
