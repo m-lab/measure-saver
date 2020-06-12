@@ -86,8 +86,7 @@ func main() {
 }
 
 // createSchema creates database schema for the Measurement model.
-func createSchema(db *pg.DB) error {
-
+func createSchema(db internal.Database) error {
 	err := db.CreateTable((*model.Measurement)(nil), &orm.CreateTableOptions{
 		IfNotExists: true,
 	})
