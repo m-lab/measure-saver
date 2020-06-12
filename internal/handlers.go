@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/go-pg/pg"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
 	"github.com/m-lab/measure-upload-service/internal/model"
@@ -12,7 +11,7 @@ import (
 
 // TestsHandler is the handler for the /tests endpoint.
 type TestsHandler struct {
-	DBConn *pg.DB
+	db Database
 }
 
 // CustomValidator is a custom validator wrapping go-playground/validator.
@@ -46,7 +45,7 @@ func (h *TestsHandler) Post(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	err = h.DBConn.Insert(&m)
+	err = h.db.Insert(&m)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
