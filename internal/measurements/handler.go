@@ -6,27 +6,28 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
+	"github.com/m-lab/measure-upload-service/internal"
 	"github.com/m-lab/measure-upload-service/internal/model"
 )
 
-// TestsHandler is the handler for the /tests endpoint.
-type TestsHandler struct {
-	DB Database
+// Handler is the handler for the /v0/measurements endpoint.
+type Handler struct {
+	DB internal.Database
 }
 
-// CustomValidator is a custom validator wrapping go-playground/validator.
-type CustomValidator struct {
+// Validator is a custom validator wrapping go-playground/validator.
+type Validator struct {
 	Validator *validator.Validate
 }
 
 // Validate validates the passed struct according to its "validate"
 // annotations.
-func (cv *CustomValidator) Validate(i interface{}) error {
+func (cv *Validator) Validate(i interface{}) error {
 	return cv.Validator.Struct(i)
 }
 
 // Post is the HTTP handler for POST /tests.
-func (h *TestsHandler) Post(c echo.Context) error {
+func (h *Handler) Post(c echo.Context) error {
 	// TODO: Verify the provided appID is among the allowed ones.
 	appID := c.QueryParam("appid")
 	if appID == "" {

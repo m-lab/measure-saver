@@ -52,11 +52,11 @@ func (db *mockDB) Close() error {
 
 func TestTestsHandler_Post(t *testing.T) {
 	db := &mockDB{}
-	h := &TestsHandler{
+	h := &Handler{
 		DB: db,
 	}
 	e := echo.New()
-	e.Validator = &CustomValidator{
+	e.Validator = &Validator{
 		Validator: validator.New(),
 	}
 
@@ -163,31 +163,4 @@ func TestTestsHandler_Post(t *testing.T) {
 		}
 		db.mustFail = false
 	})
-}
-
-func TestCustomValidator_Validate(t *testing.T) {
-	type fields struct {
-		Validator *validator.Validate
-	}
-	type args struct {
-		i interface{}
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			cv := &CustomValidator{
-				Validator: tt.fields.Validator,
-			}
-			if err := cv.Validate(tt.args.i); (err != nil) != tt.wantErr {
-				t.Errorf("CustomValidator.Validate() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
 }
