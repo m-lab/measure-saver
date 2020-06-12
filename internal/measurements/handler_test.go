@@ -50,7 +50,7 @@ func (db *mockDB) Close() error {
 	return nil
 }
 
-func TestTestsHandler_Post(t *testing.T) {
+func TestHandler_Post(t *testing.T) {
 	db := &mockDB{}
 	h := &Handler{
 		DB: db,
@@ -67,7 +67,7 @@ func TestTestsHandler_Post(t *testing.T) {
 
 	t.Run("ok", func(t *testing.T) {
 		// Send test request.
-		req := httptest.NewRequest(http.MethodPost, "/tests?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurement?appid=test",
 			strings.NewReader(string(jsonBody)))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -92,7 +92,7 @@ func TestTestsHandler_Post(t *testing.T) {
 	})
 
 	t.Run("error-missing-appid", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/tests",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements",
 			strings.NewReader(string(jsonBody)))
 
 		rec := httptest.NewRecorder()
@@ -109,7 +109,7 @@ func TestTestsHandler_Post(t *testing.T) {
 	})
 
 	t.Run("error-body-is-not-json", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/tests?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
 			strings.NewReader("thisisnotjson"))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -127,7 +127,7 @@ func TestTestsHandler_Post(t *testing.T) {
 	})
 
 	t.Run("error-missing-required-fields", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/tests?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
 			strings.NewReader(`{"BrowserID": "test"}`))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -145,7 +145,7 @@ func TestTestsHandler_Post(t *testing.T) {
 	})
 
 	t.Run("error-insert-failure", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/tests?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
 			strings.NewReader(string(jsonBody)))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
