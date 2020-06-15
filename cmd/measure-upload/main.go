@@ -5,6 +5,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
@@ -76,6 +77,7 @@ func main() {
 	}
 
 	// Endpoints' routing.
+	e.Pre(apiVersion)
 	e.POST("/v0/measurements", measurementsHandler.Post)
 
 	// Start the Echo server.
@@ -92,4 +94,19 @@ func createSchema(db internal.Database) error {
 	}
 
 	return nil
+}
+
+// apiVersion is a middleware function that reads the "version" header from the
+// HTTP request and routes it to the correct URL.
+func apiVersion(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		req := c.Request()
+		version := req.Header.Get("version")
+
+		if version != "" {
+			req.URL.Path = fmt.Sprintf("/%s%s", version, req.URL.Path)
+		}
+
+		return next(c)
+	}
 }
