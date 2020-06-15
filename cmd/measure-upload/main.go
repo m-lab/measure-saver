@@ -65,7 +65,7 @@ func main() {
 	rtx.Must(createSchema(db), "Cannot create database schema")
 
 	// Initialize the handler.
-	testsHandler := measurements.Handler{
+	measurementsHandler := measurements.Handler{
 		DB: db,
 	}
 
@@ -76,7 +76,7 @@ func main() {
 	}
 
 	// Endpoints' routing.
-	e.POST("/v0/measurements", testsHandler.Post)
+	e.POST("/v0/measurements", measurementsHandler.Post)
 
 	// Start the Echo server.
 	e.Logger.Fatal(e.Start(*flagListenAddr))
