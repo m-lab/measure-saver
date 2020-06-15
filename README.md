@@ -32,11 +32,11 @@ postgres=# create database "measure-app";
 
 ### Running the service
 
-To run the service the first time you'll need to specify the `-db.create` flag
-so that the tables are automatically created for you:
+When you run the service for the first time, the needed tables are
+automatically created for you:
 
 ```bash
-docker run --network=host measurementlab/measure-upload:latest -db.create
+docker run --network=host measurementlab/measure-upload:latest
 ```
 
 For a complete and up-to-date list of the available flags, please refer to the
