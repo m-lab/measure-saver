@@ -46,8 +46,6 @@ var (
 		"Password to use to connect to the database.")
 	flagDBName = flag.String("db.name", DefaultDBName,
 		"Name of the database to use.")
-	flagCreate = flag.Bool("db.create", false,
-		"Create database tables on startup")
 )
 
 func main() {
@@ -64,9 +62,7 @@ func main() {
 	defer db.Close()
 
 	// Create schema if needed.
-	if *flagCreate {
-		rtx.Must(createSchema(db), "Cannot create database schema")
-	}
+	rtx.Must(createSchema(db), "Cannot create database schema")
 
 	// Initialize the handler.
 	testsHandler := measurements.Handler{
