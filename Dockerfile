@@ -1,5 +1,5 @@
-# Start from the latest golang base image
-FROM golang:latest
+# Start from the golang base image.
+FROM golang:1.13.12
 
 # Add Maintainer Info
 LABEL maintainer="Measurement Lab <support@measurementlab.net>"
@@ -19,4 +19,4 @@ COPY . .
 RUN go build -o measure-upload ./cmd/measure-upload/
 
 # Command to run the executable
-CMD ["./measure-upload"]
+CMD ["/measure-upload/measure-upload"]
