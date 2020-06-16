@@ -12,7 +12,8 @@ import (
 
 // Handler is the handler for the /v0/measurements endpoint.
 type Handler struct {
-	DB internal.Database
+	DB   internal.Database
+	Keys []string
 }
 
 // Validator is a custom validator wrapping go-playground/validator.
@@ -28,13 +29,6 @@ func (cv *Validator) Validate(i interface{}) error {
 
 // Post is the HTTP handler for POST /tests.
 func (h *Handler) Post(c echo.Context) error {
-	// TODO: Verify the provided appID is among the allowed ones.
-	appID := c.QueryParam("appid")
-	if appID == "" {
-		return echo.NewHTTPError(http.StatusBadRequest,
-			"parameter appid not provided.")
-	}
-
 	var m model.Measurement
 	err := c.Bind(&m)
 	if err != nil {
