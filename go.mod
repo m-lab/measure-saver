@@ -8,6 +8,5 @@ require (
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/m-lab/go v1.4.0
-	github.com/m-lab/measure-saver v0.0.0-20200615205336-b67e17280918 // indirect
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 )
