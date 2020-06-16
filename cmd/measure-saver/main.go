@@ -32,7 +32,7 @@ const (
 	DefaultDBPass = "secret"
 
 	// DefaultDBName is the default PostgreSQL database name.
-	DefaultDBName = "measure-app"
+	DefaultDBName = "measure-saver"
 )
 
 var (
