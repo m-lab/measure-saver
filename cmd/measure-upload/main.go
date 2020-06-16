@@ -67,6 +67,13 @@ func main() {
 	})
 	defer db.Close()
 
+	// Check connection has been successful.
+	// go-pg provides a connection pool, so connections aren't actually made
+	// until some query is executed, thus we run a simple SELECT 1 to verify
+	// the connection works.
+	_, err := db.Exec("SELECT 1")
+	rtx.Must(err, "Connection to the database failed")
+
 	// Create schema if needed.
 	rtx.Must(createSchema(db), "Cannot create database schema")
 
