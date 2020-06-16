@@ -2,7 +2,7 @@
 FROM golang:1.13.12 as build
 LABEL maintainer="Measurement Lab <support@measurementlab.net>"
 
-WORKDIR /measure-upload
+WORKDIR /measure-saver
 
 # Copy go mod and sum files.
 COPY go.mod go.sum ./
@@ -16,11 +16,11 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN CGO_ENABLED=0 go build -o measure-upload ./cmd/measure-upload/
+RUN CGO_ENABLED=0 go build -o measure-saver ./cmd/measure-saver/
 
 # Copy the build output into a minimal alpine image.
 FROM alpine:3.12.0
 
-COPY --from=build /measure-upload/measure-upload /measure-upload
+COPY --from=build /measure-saver/measure-saver /measure-saver
 # Command to run the executable
-CMD ["/measure-upload"]
+CMD ["/measure-saver"]

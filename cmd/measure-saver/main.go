@@ -1,4 +1,4 @@
-// measure-upload is a REST API which receives measurements from the
+// measure-saver is a REST API which receives measurements from the
 // M-Lab Measure Chrome Extension in JSON format and stores them into a
 // PostgreSQL database.
 package main
@@ -12,9 +12,9 @@ import (
 	"github.com/labstack/echo"
 	"github.com/m-lab/go/flagx"
 	"github.com/m-lab/go/rtx"
-	"github.com/m-lab/measure-upload-service/internal"
-	"github.com/m-lab/measure-upload-service/internal/measurements"
-	"github.com/m-lab/measure-upload-service/internal/model"
+	"github.com/m-lab/measure-saver/internal"
+	"github.com/m-lab/measure-saver/internal/measurements"
+	"github.com/m-lab/measure-saver/internal/model"
 )
 
 const (

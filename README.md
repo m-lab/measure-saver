@@ -1,8 +1,8 @@
-# M-Lab Measure Upload Service
+# M-Lab Measure Saver
 
-This repository contains the source code for the Upload Service that ingests
-data from the M-Lab Measure Chrome Extension and stores it into a PostgreSQL
-database.
+This repository contains the source code for the Measure Saver service that
+ingests data from the M-Lab Measure Chrome Extension and stores it into a
+PostgreSQL database.
 
 ## Testing the service
 
@@ -27,7 +27,7 @@ docker exec -it postgres-dev psql -U postgres
 ...and create a database:
 
 ```text
-postgres=# create database "measure-app";
+postgres=# create database "measure-saver";
 ```
 
 ### Running the service
@@ -36,7 +36,7 @@ When you run the service for the first time, the needed tables are
 automatically created for you:
 
 ```bash
-docker run --network=host measurementlab/measure-upload:latest
+docker run --network=host measurementlab/measure-saver:latest
 ```
 
 For a complete and up-to-date list of the available flags, please refer to the

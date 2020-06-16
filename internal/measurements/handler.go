@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
-	"github.com/m-lab/measure-upload-service/internal"
-	"github.com/m-lab/measure-upload-service/internal/model"
+	"github.com/m-lab/measure-saver/internal"
+	"github.com/m-lab/measure-saver/internal/model"
 )
 
 // Handler is the handler for the /v0/measurements endpoint.

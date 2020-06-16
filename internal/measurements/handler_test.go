@@ -12,7 +12,7 @@ import (
 	"github.com/go-pg/pg/orm"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
-	"github.com/m-lab/measure-upload-service/internal/model"
+	"github.com/m-lab/measure-saver/internal/model"
 )
 
 var (
