@@ -12,8 +12,7 @@ import (
 
 // Handler is the handler for the /v0/measurements endpoint.
 type Handler struct {
-	DB   internal.Database
-	Keys []string
+	DB internal.Database
 }
 
 // Validator is a custom validator wrapping go-playground/validator.
