@@ -1,10 +1,10 @@
-# M-Lab Measure Upload Service
+# M-Lab Measure Saver
 
 [![GoDoc](https://godoc.org/github.com/m-lab/measure-saver?status.svg)](https://godoc.org/github.com/m-lab/measure-saver) [![Build Status](https://travis-ci.com/m-lab/measure-saver.svg?branch=master)](https://travis-ci.org/m-lab/measure-saver) [![Coverage Status](https://coveralls.io/repos/github/m-lab/measure-saver/badge.svg?branch=master)](https://coveralls.io/github/m-lab/measure-saver?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/m-lab/measure-saver)](https://goreportcard.com/report/github.com/m-lab/measure-saver)
 
-This repository contains the source code for the Upload Service that ingests
-data from the M-Lab Measure Chrome Extension and stores it into a PostgreSQL
-database.
+This repository contains the source code for the Measure Saver service that
+ingests data from the M-Lab Measure Chrome Extension and stores it into a
+PostgreSQL database.
 
 ## Testing the service
 
@@ -29,7 +29,7 @@ docker exec -it postgres-dev psql -U postgres
 ...and create a database:
 
 ```text
-postgres=# create database "measure-app";
+postgres=# create database "measure-saver";
 ```
 
 ### Running the service
@@ -38,7 +38,7 @@ When you run the service for the first time, the needed tables are
 automatically created for you:
 
 ```bash
-docker run --network=host measurementlab/measure-upload:latest
+docker run --network=host measurementlab/measure-saver:latest
 ```
 
 For a complete and up-to-date list of the available flags, please refer to the
