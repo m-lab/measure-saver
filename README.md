@@ -1,5 +1,7 @@
 # M-Lab Measure Saver
 
+[![GoDoc](https://godoc.org/github.com/m-lab/measure-saver?status.svg)](https://godoc.org/github.com/m-lab/measure-saver) [![Build Status](https://travis-ci.com/m-lab/measure-saver.svg?branch=master)](https://travis-ci.org/m-lab/measure-saver) [![Coverage Status](https://coveralls.io/repos/github/m-lab/measure-saver/badge.svg?branch=master)](https://coveralls.io/github/m-lab/measure-saver?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/m-lab/measure-saver)](https://goreportcard.com/report/github.com/m-lab/measure-saver)
+
 This repository contains the source code for the Measure Saver service that
 ingests data from the M-Lab Measure Chrome Extension and stores it into a
 PostgreSQL database.
