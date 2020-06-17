@@ -47,7 +47,10 @@ func Test_readKeysFile(t *testing.T) {
 		t.Fatalf("Cannot read test file")
 	}
 	got, err := readKeysFiles(testfile)
-	expected := []string{"foo", "bar"}
+	expected := map[string]bool{
+		"foo": true,
+		"bar": true,
+	}
 	if err != nil {
 		t.Fatalf("readKeysFile() error = %v", err)
 	}
