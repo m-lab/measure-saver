@@ -5,9 +5,10 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"flag"
 	"fmt"
-	"os"
+	"strings"
 
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
@@ -50,9 +51,13 @@ var (
 		"Password to use to connect to the database.")
 	flagDBName = flag.String("db.name", DefaultDBName,
 		"Name of the database to use.")
-	flagKeysFile = flag.String("keys.file", "",
-		"Text file containing the allowed API keys.")
+	flagKeysFile = flagx.FileBytesArray{}
 )
+
+func init() {
+	flag.Var(&flagKeysFile, "keys.file",
+		"Text file containing the allowed API keys.")
+}
 
 func main() {
 	flag.Parse()
@@ -84,19 +89,22 @@ func main() {
 
 	// Initialize the Echo server.
 	e := echo.New()
+	e.Use(middleware.Logger())
 	e.Validator = &measurements.Validator{
 		Validator: validator.New(),
 	}
 
-	if *flagKeysFile != "" {
+	keysFiles := flagKeysFile.Get()
+	if len(keysFiles) != 0 {
 		// Read API keys file and set up key auth middleware.
-		allowedKeys, err := readKeysFile(*flagKeysFile)
+		allowedKeys, err := readKeysFiles(keysFiles...)
 		rtx.Must(err, "Cannot read keys file")
 
 		e.Use(middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
 			KeyLookup: "query:key",
 			Validator: func(key string, c echo.Context) (bool, error) {
-				return contains(allowedKeys, key), nil
+				_, ok := allowedKeys[key]
+				return ok, nil
 			},
 		}))
 	} else {
@@ -123,29 +131,19 @@ func createSchema(db internal.Database) error {
 	return nil
 }
 
-// readKeysFile reads the keys file and returns a slice of strings, one per
-// line.
-func readKeysFile(path string) ([]string, error) {
-	var keys []string
-
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		keys = append(keys, scanner.Text())
-	}
-	return keys, nil
-}
-
-func contains(slice []string, el string) bool {
-	for _, e := range slice {
-		if e == el {
-			return true
+// readKeysFiles reads the keys files and returns a map of keys, one per
+// line. Lines beginning with '#' are treated as comments and ignored.
+func readKeysFiles(files ...[]byte) (map[string]bool, error) {
+	keys := map[string]bool{}
+	for _, file := range files {
+		scanner := bufio.NewScanner(bytes.NewReader(file))
+		for scanner.Scan() {
+			line := scanner.Text()
+			if !strings.HasPrefix(line, "#") &&
+				strings.TrimSpace(line) != "" {
+				keys[line] = true
+			}
 		}
 	}
-	return false
+	return keys, nil
 }

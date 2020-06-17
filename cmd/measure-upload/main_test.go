@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"io/ioutil"
 	"reflect"
 	"testing"
 
@@ -41,47 +42,16 @@ func Test_createSchema(t *testing.T) {
 }
 
 func Test_readKeysFile(t *testing.T) {
-	got, err := readKeysFile("testdata/keys.txt")
+	testfile, err := ioutil.ReadFile("testdata/keys.txt")
+	if err != nil {
+		t.Fatalf("Cannot read test file")
+	}
+	got, err := readKeysFiles(testfile)
 	expected := []string{"foo", "bar"}
 	if err != nil {
 		t.Fatalf("readKeysFile() error = %v", err)
 	}
 	if !reflect.DeepEqual(got, expected) {
 		t.Errorf("readKeysFile() = %v, want %v", got, expected)
-	}
-
-	got, err = readKeysFile("testdata/thisdoesnotexist")
-	if err == nil {
-		t.Fatalf("readKeysFile() expected err, got nil")
-	}
-}
-
-func Test_contains(t *testing.T) {
-	testslice := []string{"foo", "bar"}
-	tests := []struct {
-		name  string
-		slice []string
-		el    string
-		want  bool
-	}{
-		{
-			name:  "element-exists",
-			slice: testslice,
-			el:    "foo",
-			want:  true,
-		},
-		{
-			name:  "element-does-not-exist",
-			slice: testslice,
-			el:    "baz",
-			want:  false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := contains(tt.slice, tt.el); got != tt.want {
-				t.Errorf("contains() = %v, want %v", got, tt.want)
-			}
-		})
 	}
 }
