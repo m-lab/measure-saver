@@ -4,7 +4,6 @@ go 1.13
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
-	github.com/araddon/dateparse v0.0.0-20200409225146-d820a6159ab1 // indirect
 	github.com/go-pg/pg v8.0.6+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
