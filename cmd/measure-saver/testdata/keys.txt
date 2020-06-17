@@ -1,0 +1,5 @@
+# this is a comment and should be ignored.
+foo
+# empty lines should be ignored, too.
+
+bar

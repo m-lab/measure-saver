@@ -67,7 +67,7 @@ func TestHandler_Post(t *testing.T) {
 
 	t.Run("ok", func(t *testing.T) {
 		// Send test request.
-		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements",
 			strings.NewReader(string(jsonBody)))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -91,25 +91,8 @@ func TestHandler_Post(t *testing.T) {
 		}
 	})
 
-	t.Run("error-missing-appid", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/v0/measurements",
-			strings.NewReader(string(jsonBody)))
-
-		rec := httptest.NewRecorder()
-		c := e.NewContext(req, rec)
-
-		if err = h.Post(c); err == nil {
-			t.Errorf("TestsHandler.Post() expected error, got nil")
-		}
-
-		if err.(*echo.HTTPError).Code != http.StatusBadRequest {
-			t.Errorf("TestsHandler.Post() status code = %v, expected %v",
-				err.(*echo.HTTPError).Code, http.StatusBadRequest)
-		}
-	})
-
 	t.Run("error-body-is-not-json", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements",
 			strings.NewReader("thisisnotjson"))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -127,7 +110,7 @@ func TestHandler_Post(t *testing.T) {
 	})
 
 	t.Run("error-missing-required-fields", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements",
 			strings.NewReader(`{"BrowserID": "test"}`))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -145,7 +128,7 @@ func TestHandler_Post(t *testing.T) {
 	})
 
 	t.Run("error-insert-failure", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/v0/measurements?appid=test",
+		req := httptest.NewRequest(http.MethodPost, "/v0/measurements",
 			strings.NewReader(string(jsonBody)))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 

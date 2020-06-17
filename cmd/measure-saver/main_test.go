@@ -2,6 +2,8 @@ package main
 
 import (
 	"errors"
+	"io/ioutil"
+	"reflect"
 	"testing"
 
 	"github.com/go-pg/pg/orm"
@@ -36,5 +38,23 @@ func Test_createSchema(t *testing.T) {
 	err = createSchema(&mockDB{mustFail: true})
 	if err == nil {
 		t.Errorf("createSchema() expected error, got nil")
+	}
+}
+
+func Test_readKeysFile(t *testing.T) {
+	testfile, err := ioutil.ReadFile("testdata/keys.txt")
+	if err != nil {
+		t.Fatalf("Cannot read test file")
+	}
+	got, err := readKeysFiles(testfile)
+	expected := map[string]bool{
+		"foo": true,
+		"bar": true,
+	}
+	if err != nil {
+		t.Fatalf("readKeysFile() error = %v", err)
+	}
+	if !reflect.DeepEqual(got, expected) {
+		t.Errorf("readKeysFile() = %v, want %v", got, expected)
 	}
 }
