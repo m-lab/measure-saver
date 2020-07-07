@@ -14,11 +14,47 @@ type Measurement struct {
 	// Notes is a free-form string containing browser-specific notes.
 	Notes string
 
+	// ClientInfo is a JSONB containing information about the client.
+	ClientInfo ClientInfo
+
+	// Server is a JSONB containing information about the server.
+	ServerInfo ServerInfo
+
 	Download float64 `pg:",use_zero" validate:"required"`
 	Upload   float64 `pg:",use_zero" validate:"required"`
 	Latency  int     `pg:",use_zero" validate:"required"`
 
+	// Results is a JSONB containing extra debug information about the
+	// measurement.
 	Results Results
+}
+
+// ClientInfo is a data structure for storing client-related metadata.
+type ClientInfo struct {
+	ASN       string
+	City      string
+	Country   string
+	Hostname  string
+	IP        string
+	Latitude  float32
+	Longitude float32
+	ISP       string
+	Postal    string
+	Region    string
+	Timezone  string
+}
+
+// ServerInfo is a data structure for storing server-related metadata.
+type ServerInfo struct {
+	FQDN    string
+	IPv4    string
+	IPv6    string
+	City    string
+	Country string
+	Label   string
+	Metro   string
+	Site    string
+	URL     string
 }
 
 // Results represents the NDT variables sent by the server at the end of

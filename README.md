@@ -60,10 +60,17 @@ Example:
   "Download": 100,
   "Upload": 50,
   "Latency": 20,
+  "ClientInfo": {
+    [the ClientInfo object]
+  },
+  "ServerInfo": {
+    [the ServerInfo object]
+  },
   "Results": {
     [the NDT results object]
   }
 }
 ```
 
-The NDT Results object is defined [here](internal/model/measurement.go).
+The ClientInfo, ServerInfo and Results objects are defined
+[here](internal/model/measurement.go).
