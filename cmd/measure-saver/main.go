@@ -90,6 +90,7 @@ func main() {
 	// Initialize the Echo server.
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.CORS())
 	e.Validator = &measurements.Validator{
 		Validator: validator.New(),
 	}
