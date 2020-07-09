@@ -1,9 +1,17 @@
 package model
 
+import "time"
+
 // Measurement is the data format exchanged between the uploader and this
 // service.
 type Measurement struct {
 	ID int64 `pg:",pk"`
+
+	// Timestamp is the timestamp of this Measurement.
+	Timestamp time.Time
+
+	// UUID is the server-generated UUID for the S2C test.
+	UUID string `pg:",unique"`
 
 	// BrowserID is a unique identifier for this Measurement's uploader.
 	BrowserID string `sql:",notnull" validate:"required"`
