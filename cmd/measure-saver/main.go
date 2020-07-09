@@ -51,6 +51,12 @@ var (
 		"Password to use to connect to the database.")
 	flagDBName = flag.String("db.name", DefaultDBName,
 		"Name of the database to use.")
+
+	flagTLSCert = flag.String("tls.cert", "",
+		"Path to the TLS certificate file to use.")
+	flagTLSKey = flag.String("tls.key", "",
+		"Path to the TLS key file to use.")
+
 	flagKeysFile = flagx.FileBytesArray{}
 )
 
@@ -117,7 +123,11 @@ func main() {
 	e.POST("/v0/measurements", measurementsHandler.Post)
 
 	// Start the Echo server.
-	e.Logger.Fatal(e.Start(*flagListenAddr))
+	if *flagTLSCert != "" && *flagTLSKey != "" {
+		e.Logger.Fatal(e.StartTLS(*flagListenAddr, *flagTLSCert, *flagTLSKey))
+	} else {
+		e.Logger.Fatal(e.Start(*flagListenAddr))
+	}
 }
 
 // createSchema creates database schema for the Measurement model.
