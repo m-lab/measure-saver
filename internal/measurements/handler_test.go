@@ -50,6 +50,10 @@ func (db *mockDB) Close() error {
 	return nil
 }
 
+func (db *mockDB) Exec(interface{}, ...interface{}) (orm.Result, error) {
+	return nil, nil
+}
+
 func TestHandler_Post(t *testing.T) {
 	db := &mockDB{}
 	h := &Handler{

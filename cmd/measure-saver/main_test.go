@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"io/ioutil"
 	"reflect"
 	"testing"
 
+	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
+	"github.com/m-lab/measure-saver/internal"
 )
 
 type mockDB struct {
@@ -27,6 +30,10 @@ func (db *mockDB) CreateTable(model interface{}, opt *orm.CreateTableOptions) er
 
 func (db *mockDB) Close() error {
 	return nil
+}
+
+func (db *mockDB) Exec(interface{}, ...interface{}) (orm.Result, error) {
+	return nil, nil
 }
 
 func Test_createSchema(t *testing.T) {
@@ -56,5 +63,40 @@ func Test_readKeysFile(t *testing.T) {
 	}
 	if !reflect.DeepEqual(got, expected) {
 		t.Errorf("readKeysFile() = %v, want %v", got, expected)
+	}
+}
+
+func Test_main(t *testing.T) {
+	oldPgConnect := pgConnect
+	pgConnect = func(opt *pg.Options) internal.Database {
+		return &mockDB{}
+	}
+
+	// Test without TLS.
+	*flagListenAddr = "127.0.0.1:0"
+	ctx, cancel = context.WithCancel(context.Background())
+	cancel()
+	main()
+
+	// Test with TLS.
+	*flagTLSCert = "testdata/cert.pem"
+	*flagTLSKey = "testdata/key.pem"
+	ctx, cancel = context.WithCancel(context.Background())
+	cancel()
+	main()
+
+	pgConnect = oldPgConnect
+}
+
+func Test_initEchoServer(t *testing.T) {
+	e := initEchoServer()
+	if e == nil {
+		t.Fatalf("initEchoServer() returned nil.")
+	}
+
+	flagKeysFile.Set("testdata/keys.txt")
+	e = initEchoServer()
+	if e == nil {
+		t.Fatalf("initEchoServer() returned nil.")
 	}
 }
