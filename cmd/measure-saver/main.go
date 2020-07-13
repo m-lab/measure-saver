@@ -6,6 +6,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"flag"
 	"fmt"
 	"strings"
@@ -58,6 +59,14 @@ var (
 		"Path to the TLS key file to use.")
 
 	flagKeysFile = flagx.FileBytesArray{}
+
+	pgConnect = func(opt *pg.Options) internal.Database {
+		return pg.Connect(opt)
+	}
+
+	newEcho = func() (e *echo.Echo) {
+		return echo.New()
+	}
 )
 
 func init() {
@@ -65,34 +74,7 @@ func init() {
 		"Text file containing the allowed API keys.")
 }
 
-func main() {
-	flag.Parse()
-	rtx.Must(flagx.ArgsFromEnv(flag.CommandLine), "Could not parse env args")
-
-	// Initialize database connection.
-	db := pg.Connect(&pg.Options{
-		Addr:     *flagDBAddr,
-		User:     *flagDBUser,
-		Password: *flagDBPass,
-		Database: *flagDBName,
-	})
-	defer db.Close()
-
-	// Check connection has been successful.
-	// go-pg provides a connection pool, so connections aren't actually made
-	// until some query is executed, thus we run a simple SELECT 1 to verify
-	// the connection works.
-	_, err := db.Exec("SELECT 1")
-	rtx.Must(err, "Connection to the database failed")
-
-	// Create schema if needed.
-	rtx.Must(createSchema(db), "Cannot create database schema")
-
-	// Initialize the handler.
-	measurementsHandler := measurements.Handler{
-		DB: db,
-	}
-
+func initEchoServer() *echo.Echo {
 	// Initialize the Echo server.
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -119,15 +101,55 @@ func main() {
 			"unprotected.")
 	}
 
+	return e
+}
+
+func main() {
+	flag.Parse()
+	rtx.Must(flagx.ArgsFromEnv(flag.CommandLine), "Could not parse env args")
+
+	// Initialize database connection.
+	db := pgConnect(&pg.Options{
+		Addr:     *flagDBAddr,
+		User:     *flagDBUser,
+		Password: *flagDBPass,
+		Database: *flagDBName,
+	})
+	defer db.Close()
+
+	// Check connection has been successful.
+	// go-pg provides a connection pool, so connections aren't actually made
+	// until some query is executed, thus we run a simple SELECT 1 to verify
+	// the connection works.
+	_, err := db.Exec("SELECT 1")
+	rtx.Must(err, "Connection to the database failed")
+
+	// Create schema if needed.
+	rtx.Must(createSchema(db), "Cannot create database schema")
+
+	// Initialize the handler.
+	measurementsHandler := measurements.Handler{
+		DB: db,
+	}
+
+	// Initialize Echo server.
+	e := initEchoServer()
+
 	// Endpoints' routing.
 	e.POST("/v0/measurements", measurementsHandler.Post)
 
 	// Start the Echo server.
+	ctx := context.Background()
 	if *flagTLSCert != "" && *flagTLSKey != "" {
-		e.Logger.Fatal(e.StartTLS(*flagListenAddr, *flagTLSCert, *flagTLSKey))
+		go func() {
+			e.Logger.Fatal(e.StartTLS(*flagListenAddr, *flagTLSCert, *flagTLSKey))
+		}()
 	} else {
-		e.Logger.Fatal(e.Start(*flagListenAddr))
+		go func() {
+			e.Logger.Fatal(e.Start(*flagListenAddr))
+		}()
 	}
+	<-ctx.Done()
 }
 
 // createSchema creates database schema for the Measurement model.
