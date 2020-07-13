@@ -76,6 +76,7 @@ func Test_main(t *testing.T) {
 	_, cancel := context.WithCancel(context.Background())
 
 	// Test without TLS.
+	*flagListenAddr = "127.0.0.1:0"
 	go main()
 	time.Sleep(1 * time.Second)
 	cancel()
@@ -83,7 +84,6 @@ func Test_main(t *testing.T) {
 	// Test with TLS.
 	*flagTLSCert = "testdata/cert.pem"
 	*flagTLSKey = "testdata/key.pem"
-	*flagListenAddr = "127.0.0.1:0"
 	go main()
 	time.Sleep(1 * time.Second)
 	cancel()
