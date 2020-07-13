@@ -1,5 +1,3 @@
-// +build !race
-
 package main
 
 import (
@@ -8,7 +6,6 @@ import (
 	"io/ioutil"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
@@ -75,20 +72,18 @@ func Test_main(t *testing.T) {
 		return &mockDB{}
 	}
 
-	_, cancel := context.WithCancel(context.Background())
-
 	// Test without TLS.
 	*flagListenAddr = "127.0.0.1:0"
-	go main()
-	time.Sleep(1 * time.Second)
+	ctx, cancel = context.WithCancel(context.Background())
 	cancel()
+	main()
 
 	// Test with TLS.
 	*flagTLSCert = "testdata/cert.pem"
 	*flagTLSKey = "testdata/key.pem"
-	go main()
-	time.Sleep(1 * time.Second)
+	ctx, cancel = context.WithCancel(context.Background())
 	cancel()
+	main()
 
 	pgConnect = oldPgConnect
 }

@@ -17,6 +17,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/m-lab/go/flagx"
+	"github.com/m-lab/go/httpx"
 	"github.com/m-lab/go/rtx"
 	"github.com/m-lab/measure-saver/internal"
 	"github.com/m-lab/measure-saver/internal/measurements"
@@ -64,9 +65,7 @@ var (
 		return pg.Connect(opt)
 	}
 
-	newEcho = func() (e *echo.Echo) {
-		return echo.New()
-	}
+	ctx, cancel = context.WithCancel(context.Background())
 )
 
 func init() {
@@ -139,17 +138,20 @@ func main() {
 	e.POST("/v0/measurements", measurementsHandler.Post)
 
 	// Start the Echo server.
-	ctx := context.Background()
+	e.Server.Addr = *flagListenAddr
 	if *flagTLSCert != "" && *flagTLSKey != "" {
-		go func() {
-			e.Logger.Fatal(e.StartTLS(*flagListenAddr, *flagTLSCert, *flagTLSKey))
-		}()
+		rtx.Must(httpx.ListenAndServeTLSAsync(e.Server, *flagTLSCert, *flagTLSKey),
+			"Cannot initialize TLS server")
 	} else {
-		go func() {
-			e.Logger.Fatal(e.Start(*flagListenAddr))
-		}()
+		rtx.Must(httpx.ListenAndServeAsync(e.Server),
+			"Cannot initialize server")
 	}
+
 	<-ctx.Done()
+
+	if err := e.Shutdown(ctx); err != nil {
+		e.Logger.Fatal(err)
+	}
 }
 
 // createSchema creates database schema for the Measurement model.
