@@ -8,6 +8,3 @@ type Database interface {
 	Insert(...interface{}) error
 	Exec(interface{}, ...interface{}) (orm.Result, error)
 }
-
-type HTTPServer interface {
-}
