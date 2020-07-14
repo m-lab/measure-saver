@@ -6,6 +6,38 @@ This repository contains the source code for the Measure Saver service that
 ingests data from the M-Lab Measure Chrome Extension and stores it into a
 PostgreSQL database.
 
+## Building the service
+
+### Using Docker
+
+```bash
+docker build -t measurementlab/measure-saver:latest .
+```
+
+This will build a minimal Alpine Linux image containing a statically-linked measure-saver executable. This is the recommended way of building and running the service.
+
+For further details about how the Docker build works, please read the [Dockerfile](Dockerfile)
+
+### From the source code
+
+If you are making changes and just want to test them:
+
+```bash
+go build ./cmd/measure-saver
+```
+
+Then run it with
+
+```bash
+./measure-saver
+```
+
+Or, you can install it in `$GOPATH/bin` with:
+
+```bash
+go install ./cmd/measure-saver
+```
+
 ## Testing the service
 
 ### Running a PostgreSQL instance
