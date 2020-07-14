@@ -21,6 +21,7 @@ For further details about how the Docker build works, please read the [Dockerfil
 ### From the source code
 
 If you are making changes and just want to test them:
+
 ```bash
 go build ./cmd/measure-saver
 ```
@@ -32,10 +33,10 @@ Then run it with
 ```
 
 Or, you can install it in `$GOPATH/bin` with:
+
 ```bash
 go install ./cmd/measure-saver
 ```
-
 
 ## Testing the service
 
