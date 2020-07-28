@@ -77,12 +77,12 @@ A more complete example of how to run measure-saver with a remote PostgreSQL dat
 
 ```bash
 docker run --network=host measurementlab/measure-saver:latest \
-  -db.addr "myhost:5432"
-  -db.name "database-name"
-  -db.user "user"
-  -db.pass "password"
-  -keys.file "authorized_api_keys.txt"
-  -tls.cert "certs/cert.pem"
+  -db.addr "myhost:5432" \
+  -db.name "database-name" \
+  -db.user "user" \
+  -db.pass "password" \
+  -keys.file "authorized_api_keys.txt" \
+  -tls.cert "certs/cert.pem" \
   -tls.key "certs/key.pem"
 ```
 
