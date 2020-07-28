@@ -23,4 +23,4 @@ FROM alpine:3.12.0
 
 COPY --from=build /measure-saver/measure-saver /measure-saver
 # Command to run the executable
-CMD ["/measure-saver"]
+ENTRYPOINT ["/measure-saver"]
