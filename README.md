@@ -73,6 +73,19 @@ automatically created for you:
 docker run --network=host measurementlab/measure-saver:latest
 ```
 
+A more complete example of how to run measure-saver with a remote PostgreSQL database, an authorized keys file and a TLS certificate:
+
+```bash
+docker run --network=host measurementlab/measure-saver:latest \
+  -db.addr "myhost:5432" \
+  -db.name "database-name" \
+  -db.user "user" \
+  -db.pass "password" \
+  -keys.file "authorized_api_keys.txt" \
+  -tls.cert "certs/cert.pem" \
+  -tls.key "certs/key.pem"
+```
+
 For a complete and up-to-date list of the available flags, please refer to the
 output of `-help`.
 
