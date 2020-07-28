@@ -28,6 +28,9 @@ type Measurement struct {
 	// Server is a JSONB containing information about the server.
 	ServerInfo ServerInfo
 
+	// Annotation is a user-defined annotation for this Measurement.
+	Annotation string
+
 	Download float64 `pg:",use_zero" validate:"required"`
 	Upload   float64 `pg:",use_zero" validate:"required"`
 	Latency  int     `pg:",use_zero" validate:"required"`
