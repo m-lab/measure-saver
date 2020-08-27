@@ -49,7 +49,7 @@ For the purpose of testing this application, you can just run it in a Docker
 container:
 
 ```bash
-docker run --name postgres-dev -d postgres:12.3-alpine
+docker run --name postgres-dev -e POSTGRES_PASSWORD=secret -d postgres:12.3-alpine
 ```
 
 Then, spawn a psql instance into the running container:
