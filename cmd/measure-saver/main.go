@@ -53,6 +53,7 @@ var (
 		"Password to use to connect to the database.")
 	flagDBName = flag.String("db.name", DefaultDBName,
 		"Name of the database to use.")
+	flagDBURL = flag.String("db.url", "", "Database connection URL")
 
 	flagTLSCert = flag.String("tls.cert", "",
 		"Path to the TLS certificate file to use.")
@@ -108,19 +109,29 @@ func main() {
 	rtx.Must(flagx.ArgsFromEnv(flag.CommandLine), "Could not parse env args")
 
 	// Initialize database connection.
-	db := pgConnect(&pg.Options{
-		Addr:     *flagDBAddr,
-		User:     *flagDBUser,
-		Password: *flagDBPass,
-		Database: *flagDBName,
-	})
+	// If a complete URL has been provided, use it instead of the individual
+	// user/pass/host flags.
+	var options *pg.Options
+	var err error
+	if *flagDBURL != "" {
+		options, err = pg.ParseURL(*flagDBURL)
+		rtx.Must(err, "Invalid connection URL provided")
+	} else {
+		options = &pg.Options{
+			Addr:     *flagDBAddr,
+			User:     *flagDBUser,
+			Password: *flagDBPass,
+			Database: *flagDBName,
+		}
+	}
+	db := pgConnect(options)
 	defer db.Close()
 
 	// Check connection has been successful.
 	// go-pg provides a connection pool, so connections aren't actually made
 	// until some query is executed, thus we run a simple SELECT 1 to verify
 	// the connection works.
-	_, err := db.Exec("SELECT 1")
+	_, err = db.Exec("SELECT 1")
 	rtx.Must(err, "Connection to the database failed")
 
 	// Create schema if needed.
