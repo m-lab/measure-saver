@@ -14,7 +14,7 @@ type Measurement struct {
 	UUID string `pg:",unique"`
 
 	// BrowserID is a unique identifier for this Measurement's uploader.
-	BrowserID string `sql:",notnull" validate:"required"`
+	BrowserID string
 
 	// SchoolID identifies the school sending this Measurement.
 	SchoolID string `sql:",notnull" validate:"required"`
