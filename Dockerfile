@@ -1,5 +1,5 @@
 # Start from the golang base image.
-FROM golang:1.13.12 as build
+FROM golang:1.15 as build
 LABEL maintainer="Measurement Lab <support@measurementlab.net>"
 
 WORKDIR /measure-saver
